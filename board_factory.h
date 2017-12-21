@@ -1,3 +1,6 @@
+#ifndef BOARD_FACTORY
+#define BOARD_FACTORY
+
 #include <iostream>
 #include <list>
 #include "board.h"
@@ -13,3 +16,5 @@ class BoardFactory {
 	private:
 		ll get_state(collection cells);
 };
+
+#endif

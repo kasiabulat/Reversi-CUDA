@@ -1,3 +1,6 @@
+#ifndef BOARD
+#define BOARD
+
 #include <iostream>
 #include <list>
 
@@ -33,3 +36,5 @@ class Board {
 		ll get_flip_mask(int cell, pair<int,int> direction);  
 		bool is_players_piece_on_the_end(int cell, pair<int,int> direction);
 };
+
+#endif

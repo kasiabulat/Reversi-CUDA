@@ -1,3 +1,4 @@
+#include "board.h"
 #include "board_factory.h"
 
 Board BoardFactory::get_board(collection player_collection, collection opponent_collection) {
