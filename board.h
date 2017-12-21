@@ -2,7 +2,6 @@
 #include <list>
 
 using namespace std;
-
 typedef long long ll;
 
 class Board {
