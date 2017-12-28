@@ -9,6 +9,9 @@ typedef long long ll;
 
 class Board {
 	public:
+		ll player_pieces;
+		ll opponent_pieces;
+		
 		enum class Site { PLAYER, OPPONENT, NONE };
 		static const int BOARD_SIZE;
 		static const list<pair<int,int> > directions;
@@ -17,7 +20,7 @@ class Board {
 		static bool is_correct_coordinate(int coordinate);		
 		
 		Board(ll player_pieces, ll opponent_pieces);
-		void get_empty_fields();
+		int get_empty_fields();
 		Site get_site(int cell);
 		Board pass_turn();
 		bool is_game_ended();
@@ -28,13 +31,18 @@ class Board {
 		Site get_dominating_site();
 		int get_score(Site site); 
 		int get_move_value(int move);
-	
+		
 	private:
-		static int bit_count(long value);
-        int get_nth_bit(long value, int n);
+		static int bit_count(ll value);
+        int get_nth_bit(ll value, int n);
 		bool is_correct_board();
 		ll get_flip_mask(int cell, pair<int,int> direction);  
 		bool is_players_piece_on_the_end(int cell, pair<int,int> direction);
 };
+
+inline bool operator==(const Board& lhs, const Board& rhs) { 
+	return (lhs.player_pieces == rhs.player_pieces) && (lhs.opponent_pieces == rhs.opponent_pieces); 
+}
+	
 
 #endif
