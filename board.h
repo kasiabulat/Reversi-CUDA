@@ -6,6 +6,7 @@
 
 using namespace std;
 typedef long long ll;
+typedef list<pair<int,int> > collection;
 
 class Board {
 	public:
@@ -14,7 +15,7 @@ class Board {
 		
 		enum class Site { PLAYER, OPPONENT, NONE };
 		static const int BOARD_SIZE;
-		static const list<pair<int,int> > directions;
+		static const collection DIRECTIONS;
 		static int get_cell_number(int row, int column);
 		static pair<int,int> get_cell_coordinates(int cell);
 		static bool is_correct_coordinate(int coordinate);		
@@ -27,7 +28,7 @@ class Board {
 		Board make_move(int cell);
 		bool is_correct_move(int cell);
 		bool can_player_put_piece();
-		string text_representation(char player_Sign='X', char opponent_sign='O');
+		string text_representation(char player_sign='X', char opponent_sign='O');
 		Site get_dominating_site();
 		int get_score(Site site); 
 		int get_move_value(int move);
