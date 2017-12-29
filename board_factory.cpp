@@ -12,9 +12,9 @@ Board BoardFactory::get_starting_board() {
 					 collection({make_pair(3,3),make_pair(4,4)}));
 }
 
-ll BoardFactory::get_state(collection cells) {
-	ll result = 0L;
+ull BoardFactory::get_state(collection cells) {
+	ull result = 0ULL;
 	for(auto cell : cells) 
-		result = result || (1L << Board::get_cell_number(cell.first, cell.second));		
+		result |= (1ULL << Board::get_cell_number(cell.first, cell.second));		
 	return result;
 }

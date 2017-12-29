@@ -14,11 +14,11 @@ const collection Board::DIRECTIONS = collection({
 	make_pair(1,1) //SE
 });
 
-Board::Board(ll player_pieces, ll opponent_pieces) {
+Board::Board(ull player_pieces, ull opponent_pieces) {
 	this->player_pieces = player_pieces;
 	this->opponent_pieces = opponent_pieces;
-	if(!this->is_correct_board())
-		throw new BoardException();
+	if(!(this->is_correct_board()))
+		throw BoardException();
 }
 
 int Board::get_cell_number(int row, int column) {
@@ -49,7 +49,7 @@ Board::Site Board::get_site(int cell) {
 
 Board Board::pass_turn() {
 	if(can_player_put_piece())
-			throw new BoardException();
+			throw BoardException();
 	return Board(this->opponent_pieces,this->player_pieces);
 }
 
@@ -66,7 +66,7 @@ Board Board::make_move(int cell) {
 	auto row = cell_pair.first;
 	auto column = cell_pair.second;
 	
-	auto flip_mask = 0L;
+	auto flip_mask = 0ULL;
 	for(auto direction : Board::DIRECTIONS) {
 		auto direction_row = direction.first;
 		auto direction_column = direction.second;
@@ -83,7 +83,7 @@ Board Board::make_move(int cell) {
 		}
 	}
 	auto new_player_pieces = opponent_pieces ^ flip_mask;
-	auto new_opponent_pieces = (player_pieces ^ flip_mask) | (1L << cell);
+	auto new_opponent_pieces = (player_pieces ^ flip_mask) | (1ULL << cell);
 	return Board(new_player_pieces, new_opponent_pieces);
 }
 
@@ -115,12 +115,10 @@ bool Board::is_correct_move(int cell) {
 }
 
 bool Board::can_player_put_piece() {
-	bool result = false;
 	for(int i=0; i < Board::BOARD_SIZE*Board::BOARD_SIZE; i++) {
-		result = result || is_correct_move(i);
+		if(is_correct_move(i)) return true;
 	}
-	return result;
-	
+	return false;
 }
 
 string Board::text_representation(char player_sign, char opponent_sign) {
@@ -166,38 +164,38 @@ int Board::get_score(Board::Site site) {
 
 int Board::get_move_value(int move) {
 	if(!is_correct_move(move))
-		throw new BoardException();
+		throw BoardException();
 	auto board_after_move = make_move(move);
 	return board_after_move.get_score(Board::Site::OPPONENT) - get_score(Board::Site::PLAYER)-1;
 }
 
 
 /** private **/
-int Board::bit_count(ll value) {
+int Board::bit_count(ull value) {
 	auto result = 0;
-	while(value != 0L) {
+	while(value != 0ULL) {
 		result += (int)(value & 1);
-		value = (unsigned ll)value >> (unsigned ll)1;
+		value = value >> 1;
 	}
 	return result;
 }
 
-int Board::get_nth_bit(ll value, int n) {
-	(int)(((unsigned ll)value >> (unsigned ll)n) & 1L);
+int Board::get_nth_bit(ull value, int n) {
+	return (int)((value >> n) & 1ULL);
 }
 
 bool Board::is_correct_board() {
-	return ((this->player_pieces && this->opponent_pieces) == 0L);
+	return ((this->player_pieces & this->opponent_pieces) == 0ULL);
 }
 
-ll Board::get_flip_mask(int cell, pair<int,int> direction) {
-	auto result = 0L;
+ull Board::get_flip_mask(int cell, pair<int,int> direction) {
+	auto result = 0ULL;
 	auto current_cell = cell;
 	auto direction_row = direction.first;
 	auto direction_column = direction.second;
 		
 	while(get_site(current_cell) == Board::Site::OPPONENT) {
-		result = result | (1L << current_cell);
+		result = result | (1ULL << current_cell);
 		auto cell_pair = get_cell_coordinates(current_cell);
 		auto row = cell_pair.first;
 		auto column = cell_pair.second;

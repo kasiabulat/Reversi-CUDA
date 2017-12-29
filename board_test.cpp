@@ -20,6 +20,7 @@ class BoardTests {
 		assert(5 == Board::get_cell_number(0,5));
 		assert(8 == Board::get_cell_number(1,0));
 		assert(63 == Board::get_cell_number(7,7));
+		cerr << "test_get_bit_number OK" << endl;
 	}
 	
 	void test_get_site() {
@@ -27,6 +28,7 @@ class BoardTests {
 		assert(Board::Site::PLAYER == board.get_site(0));
 		assert(Board::Site::OPPONENT == board.get_site(3));
 		assert(Board::Site::NONE == board.get_site(13));
+		cerr << "test_get_site OK" << endl;
 	}
 	
 	void test_is_correct_move() {
@@ -43,12 +45,14 @@ class BoardTests {
 				auto cell = Board::get_cell_number(i,j);
 				assert(starting_board.is_correct_move(cell) == false);
 			}
+		cerr << "test_is_correct_move OK" << endl;;
 	}
 	
 	void test_can_player_put_piece() {
 		assert(starting_board.can_player_put_piece() == true);
 		auto completed_board = Board(0b111,0);
 		assert(completed_board.can_player_put_piece() == false);
+		cerr << "test_can_player_put_piece OK" << endl;
 	}
 	
 	void test_make_move() {
@@ -56,6 +60,7 @@ class BoardTests {
 						collection({make_pair(2,3), make_pair(3,3), make_pair(4,3), make_pair(3,4)}));
 		auto actual = starting_board.make_move(Board::get_cell_number(2,3));
 		assert(expected == actual);
+		cerr << "test_make_move OK" << endl;
 	}
 	
 	void test_pass_turn() {
@@ -63,6 +68,7 @@ class BoardTests {
 		auto expected = Board(0b0,0b111);
 		auto actual = completed_board.pass_turn();
 		assert(expected == actual);
+		cerr << "test_pass_turn OK" << endl;
 	}
 	
 	void test_pass_turn_fail() {
@@ -72,6 +78,7 @@ class BoardTests {
 			return;
 		}
 		assert(false);
+		cerr << "test_pass_turn_fail OK" << endl;
 	}
 	
 	void test_get_dominating_site() {
@@ -81,6 +88,7 @@ class BoardTests {
 		assert(Board::Site::PLAYER == player_more.get_dominating_site());
 		assert(Board::Site::OPPONENT == opponent_more.get_dominating_site());
 		assert(Board::Site::NONE == equal_board.get_dominating_site());
+		cerr << "test_get_dominating_site OK" << endl;
 	}
 	
 	void test_text_representation() {
@@ -104,6 +112,7 @@ class BoardTests {
 				"  - - - - - - - - \n";
 		auto actual = starting_board.text_representation();
 		assert(expected == actual);
+		cerr << "test_text_representation OK" << endl;
 	}
 	
 	void test_incorrect_board() {
@@ -113,12 +122,14 @@ class BoardTests {
 			return;
 		}
 		assert(false);
+		cerr << "test_incorrect_board OK" << endl;
 	}
 	
 	void test_is_game_ended() {
 		assert(starting_board.is_game_ended() == false);
 		auto ended_game = Board(0b000,0b111);
 		assert(ended_game.is_game_ended() == true);
+		cerr << "test_is_game_ended OK" << endl;
 	}
 	
 	void test_get_score() {
@@ -129,6 +140,7 @@ class BoardTests {
 		auto expected_opponent = 2;
 		assert(expected_player == actual_player);
 		assert(expected_opponent == actual_opponent);
+		cerr << "test_get_score OK" << endl;
 	}
 	
 	void test_get_move_value() {
@@ -148,12 +160,14 @@ class BoardTests {
 			assert(results[i] == board.get_move_value(cell));
 			i++;
 		}
+		cerr << "test_get_move_value OK" << endl;
 	}
 	
 	void test_get_empty_fields() {
 		auto expected = 60;
 		auto actual = starting_board.get_empty_fields();
 		assert(expected == actual);
+		cerr << "test_get_empty_fields OK" << endl;
 	}
 
 };

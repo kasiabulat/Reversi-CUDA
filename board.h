@@ -5,13 +5,13 @@
 #include <list>
 
 using namespace std;
-typedef long long ll;
+typedef unsigned long long ull;
 typedef list<pair<int,int> > collection;
 
 class Board {
 	public:
-		ll player_pieces;
-		ll opponent_pieces;
+		ull player_pieces;
+		ull opponent_pieces;
 		
 		enum class Site { PLAYER, OPPONENT, NONE };
 		static const int BOARD_SIZE;
@@ -20,7 +20,7 @@ class Board {
 		static pair<int,int> get_cell_coordinates(int cell);
 		static bool is_correct_coordinate(int coordinate);		
 		
-		Board(ll player_pieces, ll opponent_pieces);
+		Board(ull player_pieces, ull opponent_pieces);
 		int get_empty_fields();
 		Site get_site(int cell);
 		Board pass_turn();
@@ -34,10 +34,10 @@ class Board {
 		int get_move_value(int move);
 		
 	private:
-		static int bit_count(ll value);
-        int get_nth_bit(ll value, int n);
+		static int bit_count(ull value);
+        int get_nth_bit(ull value, int n);
 		bool is_correct_board();
-		ll get_flip_mask(int cell, pair<int,int> direction);  
+		ull get_flip_mask(int cell, pair<int,int> direction);  
 		bool is_players_piece_on_the_end(int cell, pair<int,int> direction);
 };
 

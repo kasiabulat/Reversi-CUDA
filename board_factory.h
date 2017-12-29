@@ -6,7 +6,7 @@
 #include "board.h"
 
 using namespace std;
-typedef long long ll;
+typedef unsigned long long ull;
 typedef list<pair<int,int> > collection;
 
 class BoardFactory {
@@ -14,7 +14,7 @@ class BoardFactory {
 		Board get_board(collection player_collection, collection opponent_collection);
 		Board get_starting_board();
 	private:
-		ll get_state(collection cells);
+		ull get_state(collection cells);
 };
 
 #endif
