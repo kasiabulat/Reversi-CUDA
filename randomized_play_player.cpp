@@ -3,7 +3,8 @@
 #include <iostream>
 #include <cstring>
 #include <stdlib.h> 
-#include <list> 
+#include <vector> 
+#include <algorithm>
 
 #include "board.h"
 #include "randomized_play_player.h"
@@ -77,12 +78,12 @@ int RandomizedPlayPlayerCuda::make_move(Board board) {
  
     /// kernel functions
     CUfunction check_move;
-    if(cuModuleGetFunction(&check_move, cuModuleRadius, "check_move") != CUDA_SUCCESS) 
+    if(cuModuleGetFunction(&check_move, cuModuleRandomizedPlayPlayer, "check_move") != CUDA_SUCCESS) 
         print_error("cannot acquire kernel handle for check_move\n");
 		
 	vector<int> correct_moves;	
 	for(int i=0; i<64; i++) 
-		if(board.is_correct_move(i) 
+		if(board.is_correct_move(i)) 
 			correct_moves.push_back(i);
 			
 	unsigned int blockDimX = 1024;
@@ -112,8 +113,8 @@ int RandomizedPlayPlayerCuda::make_move(Board board) {
         	print_error("failed to copy result from result_array_device");
         
         long long sum = 0;
-        for(auto value in values) 
-        	sum += value;
+        for(int i=0; i<this->number_of_tries; i++) 
+        	sum += values[i];
 		
         moves_values.push_back(make_pair(sum,move));
 	}
