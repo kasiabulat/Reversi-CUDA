@@ -33,10 +33,10 @@ LINKLINE = $(LINK) -o $(TARGET) $(OBJS) $(LIB_CUDA)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.ptx: %.cu
-	$(NVCC) $(NVCCFLAGS) $< -o $@
+	$(NVCC) $(NVCCFLAGS) $< -o $@ 
 
 %.cpp.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@ 
 
 $(TARGET): prepare $(OBJS) $(CUDA_OBJS)
 	$(LINKLINE)

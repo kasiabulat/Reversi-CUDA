@@ -9,16 +9,16 @@ extern "C" {
 	int evaluate(Board board) {
 		if(board.is_game_ended()) {
 			switch(board.get_dominating_site()) {
-				case Board::Site::PLAYER:
+				case Board::PLAYER:
 					return 1;
-				case Board::Site::OPPONENT:
+				case Board::OPPONENT:
 					return -1;
-				case Board::Site::NONE:
+                case Board::NONE:
 					return 0;
 			}
 		}
 		if(!board.can_player_put_piece()) {
-			return -board.pass_turn().evaluate();
+			return -evaluate(board.pass_turn());
 		}
 		
 		vector<int> correct_moves;
@@ -29,7 +29,7 @@ extern "C" {
 		auto element_number = rand () % moves.size;	
 		auto played_move = correct_moves[element_number];
 		auto next_board = make_move(played_move)
-		return -next_board.evaluate();
+		return -evaluate(next_board);
 	}
 	
 	__global__

@@ -13,7 +13,7 @@ class Board {
 		ull player_pieces;
 		ull opponent_pieces;
 		
-		enum class Site { PLAYER, OPPONENT, NONE };
+		enum Site { PLAYER, OPPONENT, NONE };
 		static const int BOARD_SIZE;
 		static const collection DIRECTIONS;
 		static int get_cell_number(int row, int column);
