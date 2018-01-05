@@ -1,6 +1,7 @@
 #include "cuda.h"
 #include <cstdio>
 #include <stdlib.h> 
+#include <vector>
 #include "board.h"
 #include "board_factory.h"
 
@@ -23,12 +24,12 @@ extern "C" {
 		
 		vector<int> correct_moves;
 		for(int i=0; i<64; i++) 
-			if(board.is_correct_move(i) 
+			if(board.is_correct_move(i)) 
 				correct_moves.push_back(i);
 		
-		auto element_number = rand () % moves.size;	
-		auto played_move = correct_moves[element_number];
-		auto next_board = make_move(played_move)
+		int element_number = rand() % correct_moves.size();	
+		int played_move = correct_moves[element_number];
+		Board next_board = board.make_move(played_move);
 		return -evaluate(next_board);
 	}
 	
