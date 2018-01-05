@@ -91,6 +91,17 @@ int RandomizedPlayPlayerCuda::make_move(Board board) {
 	
 	vector<pair<int,int> > moves_values; 
 	
+/*	todo: generate numbers
+
+	curandGenerator_t generator;
+	curandCreateGenerator(&generator, CURAND_RNG_PSEUDO_DEFAULT);
+	curandSetPseudoRandomGeneratorSeed(generator, thid);
+	
+	int size = Board::BOARD_SIZE * Board::BOARD_SIZE;
+	unsigned int random_numbers[64];
+	
+	curandGenerate(generator, random_numbers, size);*/
+	
 	/// calculate moves values using CUDA
 	for(auto move : correct_moves) {
 		auto board_to_check = board.make_move(move);
