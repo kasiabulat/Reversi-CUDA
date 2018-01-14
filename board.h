@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <list>
-#include "cuda.h"
 
 #ifdef __CUDACC__
+#include "cuda.h"
 #define CUDA_CALLABLE_MEMBER __device__
 #else
 #define CUDA_CALLABLE_MEMBER
