@@ -14,7 +14,7 @@ INCLUDES = -I. -I$(CUDA_INSTALL_PATH)/include
 LIB_CUDA := -L/usr/lib/nvidia-current -lcuda -L/usr/local/cuda/lib64 -lcurand -lcudart
 
 # Options
-NVCCOPTIONS = -ptx -Wno-deprecated-gpu-targets
+NVCCOPTIONS = -ptx -Wno-deprecated-gpu-targets -std=c++11
 CXXOPTIONS = -std=c++17 -O2 -lcurand
 
 # Common flags
@@ -23,7 +23,7 @@ NVCCFLAGS += $(COMMONFLAGS) $(NVCCOPTIONS)
 CXXFLAGS += $(COMMONFLAGS) $(CXXOPTIONS)
 CFLAGS += $(COMMONFLAGS)
 
-CUDA_OBJS = randomized_play_player.ptx 
+CUDA_OBJS = randomized_play_player.ptx
 OBJS = demo.cpp.o randomized_play_player.cpp.o board.cpp.o board_factory.cpp.o
 TARGET = solution.x
 LINKLINE =  $(LINK) -o $(TARGET) $(OBJS) $(LIB_CUDA)
@@ -33,10 +33,13 @@ LINKLINE =  $(LINK) -o $(TARGET) $(OBJS) $(LIB_CUDA)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 %.ptx: %.cu
-	$(NVCC) $(NVCCFLAGS) $< -o $@ 
+	$(NVCC) $(NVCCFLAGS) $< -o $@
 
 %.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@ 
+
+%.cu.o: %.cu
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(TARGET): prepare $(OBJS) $(CUDA_OBJS)
 	$(LINKLINE)
