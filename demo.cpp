@@ -6,6 +6,14 @@
 using namespace std;
 
 int main() {
-	RandomizedPlayPlayerCuda randomized_play_player_cuda();
+	RandomizedPlayPlayerCuda randomized_play_player_cuda("Kasia", 12345, 1024);
+	
+	BoardFactory board_factory = BoardFactory();
+	Board starting_board = board_factory.get_starting_board();
+	cerr << starting_board.text_representation('X','O');
+	
+	auto move = randomized_play_player_cuda.make_move(starting_board);
+	Board new_board = starting_board = starting_board.make_move(move);
+	cerr << new_board.text_representation('O','X');
 }
 

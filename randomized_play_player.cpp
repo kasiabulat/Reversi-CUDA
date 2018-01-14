@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 
 
 #include "board.h"
@@ -14,7 +15,7 @@
 
 using namespace std;
 
-const char*cuda_error_string(CUresult result)
+string cuda_error_string(CUresult result)
 {
 	switch(result)
 	{
@@ -109,6 +110,22 @@ RandomizedPlayPlayerCuda::RandomizedPlayPlayerCuda(string name,int seed,int numb
 	this->name=name;
 	this->seed=seed;
 	this->number_of_tries=number_of_tries;
+	
+	cuInit(0);
+    
+    CUdevice cuDevice;
+    CUresult res = cuDeviceGet(&cuDevice, 0);
+    if (res != CUDA_SUCCESS) {
+        printf("cannot acquire device 0\n"); 
+        exit(1);
+    }
+
+    CUcontext cuContext;
+    res = cuCtxCreate(&cuContext, 0, cuDevice);
+    if (res != CUDA_SUCCESS) {
+        printf("cannot create context\n");
+        exit(1);
+    }
 }
 
 void check_rand_result(curandStatus_t randStatus,string message="")
@@ -136,8 +153,11 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 
 	/// load module
 	CUmodule cuModuleRandomizedPlayPlayer;
-	if(cuModuleLoad(&cuModuleRandomizedPlayPlayer,"randomized_play_player.ptx")!=CUDA_SUCCESS)
-		print_error("cannot load module randomized_play_player\n");
+	result = cuModuleLoad(&cuModuleRandomizedPlayPlayer,"randomized_play_player.ptx");
+	string error = "cannot load module: " + cuda_error_string(result) + " " + to_string(result) + "\n";
+	check_result(result, error); 
+	// TODO: error 218 when .cu file uncommented => PTX JIT compilation failed
+	// possible cause: calling board functions from .cu 
 
 	/// kernel functions
 	CUfunction check_move;
@@ -145,8 +165,6 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 		print_error("cannot acquire kernel handle for check_move\n");
 
 
-
-	//vector<int> correct_moves;
 	unsigned int correct_moves[64];
 	unsigned int numberOfCorrectMoves=0;
 	for(int i=0;i<64;i++)
@@ -158,7 +176,6 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	unsigned int gridDimY=numberOfCorrectMoves;
 	unsigned int numberOfThreads=blockDimX*gridDimX*gridDimY;
 
-//	vector<pair<int,int> > moves_values;
 
 	curandGenerator_t generator;
 	randStatus=curandCreateGenerator(&generator,CURAND_RNG_PSEUDO_DEFAULT);
@@ -173,7 +190,6 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 
 	int const numberOfRandoms=number_of_tries*numberOfCorrectMoves*64;
 
-	//randStatus=
 	cudaMalloc((void**)&random_numbers,numberOfRandoms*sizeof(unsigned int));//???
 	//check_rand_result(randStatus,"Cannot allocate array for randoms");
 
@@ -183,21 +199,10 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	unsigned int moveValues[64];
 
 	/// calculate moves values using CUDA
-	//for(auto move : correct_moves)
-	//{
-	//auto board_to_check=board.make_move(move);
-	//int result=0;
 
 	CUdeviceptr threadResults;
 	result=cuMemAlloc(&threadResults,numberOfThreads*sizeof(int));
 	check_result(result,"Results array malloc failed");
-
-//	int tries=this->number_of_tries;
-//	CUdeviceptr result_array_device;
-//	if(cuMemAlloc(&result_array_device,this->number_of_tries*sizeof(int))!=CUDA_SUCCESS)
-//	{
-//		print_error("failed to alloc sth_changed\n");
-//	}
 
 	void*args[]={&board.player_pieces,&board.opponent_pieces,&threadResults};
 	if(cuLaunchKernel(check_move,gridDimX,gridDimY,1,blockDimX,1,1,0,0,args,0)!=CUDA_SUCCESS)
@@ -226,6 +231,7 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	}
 
 	return bestMove;
+	return 0;
 }
 
 
