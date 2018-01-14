@@ -11,17 +11,17 @@ NVCC  := $(CUDA_INSTALL_PATH)/bin/nvcc -lcurand -ccbin $(CCPATH)
 INCLUDES = -I. -I$(CUDA_INSTALL_PATH)/include
 
 # Libraries
-LIB_CUDA := -L/usr/lib/nvidia-current -lcuda
+LIB_CUDA := -L/usr/lib/nvidia-current -lcuda -L/usr/local/cuda/lib64 -lcurand -lcudart
 
 # Options
 NVCCOPTIONS = -ptx -Wno-deprecated-gpu-targets
 CXXOPTIONS = -std=c++17 -O2 -lcurand
 
 # Common flags
-COMMONFLAGS += $(INCLUDES) -lcurand
+COMMONFLAGS += $(INCLUDES)
 NVCCFLAGS += $(COMMONFLAGS) $(NVCCOPTIONS)
 CXXFLAGS += $(COMMONFLAGS) $(CXXOPTIONS)
-CFLAGS += $(COMMONFLAGS) -lcurand
+CFLAGS += $(COMMONFLAGS)
 
 CUDA_OBJS = randomized_play_player.ptx 
 OBJS = demo.cpp.o randomized_play_player.cpp.o board.cpp.o board_factory.cpp.o
