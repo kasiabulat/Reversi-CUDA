@@ -106,15 +106,13 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	//CUdeviceptr random_numbers;
 	unsigned int*random_numbers;
 
-	int const numberOfRandoms=number_of_tries*numberOfCorrectMoves*64;
+	int const numberOfRandoms=numberOfThreads*64;
 
-	cudaMalloc((void**)&random_numbers,numberOfRandoms*sizeof(unsigned int));//???
+	cudaMalloc((void**)&random_numbers,numberOfRandoms*sizeof(unsigned int));
 	//check_rand_result(randStatus,"Cannot allocate array for randoms");
 
 	randStatus=curandGenerate(generator,random_numbers,numberOfRandoms);
 	check_rand_result(randStatus);
-
-	unsigned int moveValues[64];
 
 	/// calculate moves values using CUDA
 
@@ -122,7 +120,15 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	result=cuMemAlloc(&threadResults,numberOfThreads*sizeof(int));
 	check_result(result,"Results array malloc failed");
 
-	void*args[]={&board.player_pieces,&board.opponent_pieces,&threadResults};
+	CUdeviceptr correctMovesDevice;
+	result=cuMemAlloc(&correctMovesDevice,numberOfCorrectMoves*sizeof(int));
+	check_result(result,"Moves array malloc failed");
+
+	result=cuMemcpyHtoD(correctMovesDevice,correct_moves,numberOfCorrectMoves*sizeof(int));
+	check_result(result,"Moves array malloc failed");
+
+
+	void*args[]={&board.player_pieces,&board.opponent_pieces,&correctMovesDevice,&random_numbers,&threadResults};
 	result=cuLaunchKernel(check_move,gridDimX,gridDimY,1,blockDimX,1,1,0,0,args,0);
 	check_result(result,"cannot run kernel check_move\n");
 
