@@ -10,7 +10,7 @@ using namespace std;
 class RandomizedPlayPlayerCuda {
 	public:
 		string name;		
-		RandomizedPlayPlayerCuda(string name, int seed, int number_of_tries);
+		RandomizedPlayPlayerCuda(string name, unsigned long long seed, int number_of_tries);
 		int make_move(Board board);
 	private:
 		int seed;

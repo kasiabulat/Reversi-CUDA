@@ -20,7 +20,7 @@ void print_error(string error)
 	exit(1);
 }
 
-RandomizedPlayPlayerCuda::RandomizedPlayPlayerCuda(string name,int seed,int number_of_tries)
+RandomizedPlayPlayerCuda::RandomizedPlayPlayerCuda(string name,unsigned long long seed,int number_of_tries)
 {
 	this->name=name;
 	this->seed=seed;
@@ -98,7 +98,7 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	curandGenerator_t generator;
 	randStatus=curandCreateGenerator(&generator,CURAND_RNG_PSEUDO_DEFAULT);
 	check_rand_result(randStatus);
-	randStatus=curandSetPseudoRandomGeneratorSeed(generator,123ULL);
+	randStatus=curandSetPseudoRandomGeneratorSeed(generator,seed);
 	check_rand_result(randStatus);
 
 	int size=Board::BOARD_SIZE*Board::BOARD_SIZE;
