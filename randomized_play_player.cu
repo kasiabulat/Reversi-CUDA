@@ -58,7 +58,7 @@ __global__ void check_move(ull player_pieces,ull opponent_pieces,int*moves_to_ch
 	Board computedBoard(player_pieces,opponent_pieces);
 	int checkedMove=moves_to_check[moveId];
 	Board movedBoard=computedBoard.make_move(checkedMove);
-	result[threadGlobalId]=evaluate(movedBoard,randoms,numberOfTries,threadGlobalId);
+	result[threadGlobalId]=-evaluate(movedBoard,randoms,numberOfTries,threadGlobalId);
 }
 }
 
