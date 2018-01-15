@@ -9,12 +9,13 @@
 #include "board.cpp"
 
 extern "C" {
-__device__ int evaluate(Board board,unsigned int*random_number)
-{
-	printf("Function launch\n");
 
+
+
+__device__ int evaluate(Board board,unsigned int*random_numbers,unsigned int numberOfThreads,unsigned int globalId)
+{
 	int resultMultiplier=1;
-	while(!board.is_game_ended())
+	for(unsigned int iteration=0;!board.is_game_ended();iteration++)
 	{
 		Board next_board(0,0);
 		if(!board.can_player_put_piece())
@@ -28,13 +29,13 @@ __device__ int evaluate(Board board,unsigned int*random_number)
 			for(int i=0;i<64;i++)
 				if(board.is_correct_move(i))
 					correct_moves[idx++]=i;
-			unsigned int currentRandom=*(random_number++);
-			unsigned int element_number=currentRandom%idx;
+			unsigned int element_number=random_numbers[numberOfThreads*iteration+globalId]%idx;
 			int played_move=correct_moves[element_number];
 			next_board=board.make_move(played_move);
 		}
 		board=next_board;
 		resultMultiplier*=-1;
+
 	}
 	switch(board.get_dominating_site())
 	{
@@ -57,7 +58,7 @@ __global__ void check_move(ull player_pieces,ull opponent_pieces,int*moves_to_ch
 	Board computedBoard(player_pieces,opponent_pieces);
 	int checkedMove=moves_to_check[moveId];
 	Board movedBoard=computedBoard.make_move(checkedMove);
-	result[threadGlobalId]=evaluate(movedBoard,&(randoms[threadGlobalId*64]));
+	result[threadGlobalId]=evaluate(movedBoard,randoms,numberOfTries,threadGlobalId);
 }
 }
 

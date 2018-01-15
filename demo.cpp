@@ -6,7 +6,10 @@
 using namespace std;
 
 int main() {
-	RandomizedPlayPlayerCuda randomized_play_player_cuda("Kasia", 12345, 1024);
+
+	int number_of_tries=100*1024;
+
+	RandomizedPlayPlayerCuda randomized_play_player_cuda("Kasia", 12345, number_of_tries);
 	
 	BoardFactory board_factory = BoardFactory();
 	Board starting_board = board_factory.get_starting_board();

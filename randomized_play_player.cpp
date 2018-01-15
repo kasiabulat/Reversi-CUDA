@@ -106,7 +106,7 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 	//CUdeviceptr random_numbers;
 	unsigned int*random_numbers;
 
-	int const numberOfRandoms=numberOfThreads*64;
+	int const numberOfRandoms=numberOfThreads*128;
 
 	cudaMalloc((void**)&random_numbers,numberOfRandoms*sizeof(unsigned int));
 	//check_rand_result(randStatus,"Cannot allocate array for randoms");
@@ -147,6 +147,7 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 		long long sum=0;
 		for(int j=0;j<number_of_tries;j++)
 			sum+=values[gridDimX*blockDimX*i+j];
+		cerr<<"Index: "<<i<<",sum: "<<sum<<endl;
 		if(sum>bestValue)
 		{
 			bestValue=sum;

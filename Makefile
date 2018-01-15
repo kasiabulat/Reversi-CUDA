@@ -24,7 +24,7 @@ CXXFLAGS += $(COMMONFLAGS) $(CXXOPTIONS)
 CFLAGS += $(COMMONFLAGS)
 
 CUDA_OBJS = randomized_play_player.ptx
-OBJS = demo.cpp.o randomized_play_player.cpp.o board.cpp.o board_factory.cpp.o
+OBJS = program.cpp.o randomized_play_player.cpp.o board.cpp.o board_factory.cpp.o
 TARGET = solution.x
 LINKLINE =  $(LINK) -o $(TARGET) $(OBJS) $(LIB_CUDA)
 
