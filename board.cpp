@@ -9,17 +9,7 @@
 
 /** public **/
 const int Board::BOARD_SIZE=8;
-/*
-static const cell_t Board::DIRECTIONS[]={cell_t(-1,-1), //NW
-								  cell_t(-1,0), //N
-								  cell_t(-1,1), //NE
-								  cell_t(0,-1), //W
-								  cell_t(0,1), //E
-								  cell_t(1,-1), //SW
-								  cell_t(1,0), //S
-								  cell_t(1,1) //SE
-};
-*/
+
 CUDA_CALLABLE_MEMBER
 Board::Board(ull player_pieces,ull opponent_pieces)
 {

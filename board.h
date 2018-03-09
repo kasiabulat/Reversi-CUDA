@@ -23,7 +23,6 @@ struct cell_t
 using namespace std;
 typedef unsigned long long ull;
 
-//extern "C" {
 class Board
 {
 public:
@@ -102,6 +101,5 @@ inline bool operator==(const Board&lhs,const Board&rhs)
 {
 	return (lhs.player_pieces==rhs.player_pieces)&&(lhs.opponent_pieces==rhs.opponent_pieces);
 }
-//}
 
 #endif

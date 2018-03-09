@@ -103,13 +103,11 @@ int RandomizedPlayPlayerCuda::make_move(Board board)
 
 	int size=Board::BOARD_SIZE*Board::BOARD_SIZE;
 
-	//CUdeviceptr random_numbers;
-	unsigned int*random_numbers;
+	unsigned int* random_numbers;
 
 	int const numberOfRandoms=numberOfThreads*128;
 
 	cudaMalloc((void**)&random_numbers,numberOfRandoms*sizeof(unsigned int));
-	//check_rand_result(randStatus,"Cannot allocate array for randoms");
 
 	randStatus=curandGenerate(generator,random_numbers,numberOfRandoms);
 	check_rand_result(randStatus);

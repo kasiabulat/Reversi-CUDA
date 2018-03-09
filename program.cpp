@@ -14,7 +14,7 @@ int main(int argc,char**argv)
 	}
 	int number_of_tries=100*1024;
 
-	RandomizedPlayPlayerCuda randomized_play_player_cuda("Kasia", 12345, number_of_tries);
+	RandomizedPlayPlayerCuda randomized_play_player_cuda("Player", 12345, number_of_tries);
 
 	unsigned long long playerPieces=stoull(string(argv[1]));
 	unsigned long long opponentPieces=stoull(string(argv[2]));

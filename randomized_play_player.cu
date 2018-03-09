@@ -10,8 +10,6 @@
 
 extern "C" {
 
-
-
 __device__ int evaluate(Board board,unsigned int*random_numbers,unsigned int numberOfThreads,unsigned int globalId)
 {
 	int resultMultiplier=1;
